@@ -1,0 +1,14 @@
+# Local font binaries can be large and may have redistribution limits.
+fonts/*
+!fonts/.gitkeep
+
+# Generated reports.
+reports/*
+!reports/.gitkeep
+
+# Browser verification artifacts.
+.playwright-mcp/
+
+# Python cache.
+__pycache__/
+*.py[cod]

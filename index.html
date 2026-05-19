@@ -1,0 +1,157 @@
+<!doctype html>
+<html lang="zh-Hant-TW">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Font Testbench</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <header>
+    <h1>Font Testbench</h1>
+    <div class="toolbar">
+      <label class="top-filter" for="weightSelect">篩選字重
+        <select id="weightSelect">
+          <option value="">全部</option>
+        </select>
+      </label>
+      <label class="top-filter" for="styleSelect">篩選樣式
+        <select id="styleSelect">
+          <option value="">全部</option>
+          <option value="normal">正體</option>
+          <option value="italic">斜體</option>
+        </select>
+      </label>
+    </div>
+  </header>
+
+  <main id="appShell" class="app-shell">
+    <aside>
+      <div class="sidebar-top">
+        <button id="toggleSidebar" class="sidebar-toggle secondary" type="button" aria-label="收合側欄" title="收合側欄">‹</button>
+      </div>
+
+      <div class="sidebar-content">
+        <details class="panel-section" open>
+          <summary>字型來源</summary>
+          <div class="section-body">
+            <div class="drop-zone" id="dropZone">
+              <div>
+                <div class="drop-title">拖放字型檔到這裡</div>
+                <div class="drop-note">可從 Finder 拖入單檔、多檔，或選取 ~/Library/Fonts 資料夾</div>
+              </div>
+            </div>
+
+            <div class="control">
+              <label>本機字型</label>
+              <div class="source-actions">
+                <button id="chooseFontFiles" class="primary" type="button">加入字型檔</button>
+                <input id="fontFiles" type="file" accept=".ttf,.otf,.ttc,.otc,.woff,.woff2,font/*" multiple>
+                <button id="chooseFontFolder" class="secondary" type="button">加入資料夾</button>
+                <input id="fontFolder" type="file" accept=".ttf,.otf,.ttc,.otc,.woff,.woff2,font/*" webkitdirectory directory multiple>
+              </div>
+            </div>
+
+            <div class="control">
+              <label>字型庫來源</label>
+              <div class="font-source-list" id="fontSourceList"></div>
+              <div class="library-actions">
+                <button id="scanLibrary" class="secondary" type="button">掃描</button>
+                <button id="addSelectedFonts" class="primary" type="button">加入勾選</button>
+                <button id="removeSelectedFonts" class="secondary" type="button">恢復預設</button>
+                <button id="clearLibrarySelection" class="secondary" type="button">清除勾選</button>
+              </div>
+              <div class="status" id="libraryStatus" aria-live="polite"></div>
+            </div>
+          </div>
+        </details>
+
+        <details class="panel-section" open>
+          <summary>字型庫</summary>
+          <div class="section-body">
+            <div class="control">
+              <label for="librarySearch">搜尋字型 / 字重</label>
+              <input id="librarySearch" type="search" placeholder="GenYo, Noto, Bold, Regular">
+            </div>
+
+            <div class="control">
+              <div class="library-list" id="libraryList"></div>
+            </div>
+          </div>
+        </details>
+
+        <details class="panel-section" open>
+          <summary>樣本</summary>
+          <div class="section-body">
+            <div class="control">
+              <label for="sampleSelect">樣本</label>
+              <select id="sampleSelect"></select>
+            </div>
+
+            <div class="control">
+              <label for="sampleText">文字</label>
+              <textarea id="sampleText" spellcheck="false"></textarea>
+            </div>
+          </div>
+        </details>
+
+        <details class="panel-section" open>
+          <summary>顯示</summary>
+          <div class="section-body">
+            <div class="control inline">
+              <div>
+                <label for="fontSize">字級</label>
+                <input id="fontSize" type="range" min="16" max="72" value="30">
+              </div>
+              <input id="fontSizeNumber" type="number" min="16" max="72" value="30">
+            </div>
+
+            <div class="control">
+              <label for="langSelect">lang</label>
+              <select id="langSelect">
+                <option value="zh-Hant-TW">zh-Hant-TW</option>
+                <option value="zh-Hans-CN">zh-Hans-CN</option>
+                <option value="zh-Hant-HK">zh-Hant-HK</option>
+                <option value="ja">ja</option>
+                <option value="ko">ko</option>
+                <option value="">none</option>
+              </select>
+            </div>
+
+            <div class="status" id="loadStatus" aria-live="polite"></div>
+          </div>
+        </details>
+      </div>
+    </aside>
+
+    <section class="font-list" id="fontList" aria-live="polite"></section>
+  </main>
+
+  <footer class="footbar">
+    <div id="stats"></div>
+  </footer>
+
+  <button id="scrollSyncToggle" class="scroll-sync-toggle" type="button" aria-pressed="false">同步捲動：關</button>
+
+  <template id="fontCardTemplate">
+    <article class="font-card">
+      <div class="font-head">
+        <div class="font-title" tabindex="0">
+          <div class="font-name"></div>
+          <div class="font-subtitle"></div>
+          <div class="font-tooltip" role="tooltip">
+            <div class="font-tooltip-source"></div>
+            <div class="font-tooltip-meta"></div>
+          </div>
+        </div>
+        <div class="font-head-actions">
+          <button class="remove" type="button" aria-label="移除字體">−</button>
+        </div>
+      </div>
+      <div class="sample-text"><span class="sample-line"></span></div>
+    </article>
+  </template>
+
+  <script src="app.js" defer></script>
+</body>
+</html>
