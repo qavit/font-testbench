@@ -483,6 +483,7 @@
     .font-card {
       display: grid;
       grid-template-columns: minmax(180px, 260px) minmax(0, 1fr);
+      grid-template-rows: minmax(0, 1fr);
       height: var(--card-height);
       overflow: visible;
     }
@@ -502,9 +503,10 @@
       justify-content: space-between;
       gap: 12px;
       align-items: flex-start;
-      height: var(--card-height);
+      min-height: 0;
       padding: 10px 12px;
       border-right: 1px solid var(--line);
+      border-radius: calc(var(--radius) - 1px) 0 0 calc(var(--radius) - 1px);
       background: #fbfcfd;
       cursor: grab;
       user-select: none;
@@ -601,8 +603,9 @@
 
     .sample-text {
       display: block;
-      height: var(--card-height);
+      min-height: 0;
       padding: 12px 16px;
+      border-radius: 0 calc(var(--radius) - 1px) calc(var(--radius) - 1px) 0;
       overflow-x: auto;
       overflow-y: hidden;
       font-size: var(--sample-size, 28px);
