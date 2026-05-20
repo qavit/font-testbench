@@ -388,18 +388,20 @@ Ngài he Hak-kâ-ngìn. Sṳ́-ngìn, ngì, ngîn.
       if (!key || coverageCache.has(key) || coveragePending.has(key)) return;
 
       coveragePending.add(key);
+      let shouldRender = false;
       try {
         const url = `${fontServerBase}/api/coverage?path=${encodeURIComponent(face.path)}&index=${encodeURIComponent(face.index ?? "")}&text=${encodeURIComponent(text)}`;
         const response = await fetch(url);
         if (!response.ok) throw new Error(`HTTP ${response.status}`);
         const data = await response.json();
         coverageCache.set(key, new Set(data.missingCodepoints || []));
-        render();
+        shouldRender = true;
       } catch (error) {
-        coverageCache.set(key, null);
+        coverageCache.delete(key);
       } finally {
         coveragePending.delete(key);
       }
+      if (shouldRender) render();
     }
 
     function renderSampleLine(line, font, text, token) {
@@ -411,15 +413,21 @@ Ngài he Hak-kâ-ngìn. Sṳ́-ngìn, ngì, ngîn.
         ensureCoverage(face, text, token);
       }
 
+      if (coveragePending.has(key)) {
+        line.dataset.coverage = "pending";
+      }
+
       if (!(missing instanceof Set)) {
         line.textContent = text;
         return;
       }
 
+      line.dataset.coverage = "ready";
+
       line.replaceChildren(...graphemes(text).map((segment) => {
         const span = document.createElement("span");
         span.textContent = segment;
-        const isMissing = [...segment].some((char) => !char.isspace() && missing.has(char.codePointAt(0)));
+        const isMissing = [...segment].some((char) => !/\s/u.test(char) && missing.has(char.codePointAt(0)));
         if (isMissing) span.className = "sample-missing";
         return span;
       }));

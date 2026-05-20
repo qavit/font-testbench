@@ -618,7 +618,8 @@
     }
 
     .sample-missing {
-      color: #9aa3ad;
+      color: #c43b2b;
+      opacity: 0.92;
     }
 
     .remove {
